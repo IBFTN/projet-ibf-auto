@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBF Motors — Contact</title>
+  <link rel="icon" href="logo1.png" type="image/png">
+  <link rel="shortcut icon" href="logo1.png" type="image/png">
+  <link href="styles.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', system-ui, sans-serif; background: #fff; color: #111; }
+    
+    .page-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+    }
+    
+    .page-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    
+    .page-nav {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .page-nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    
+    .page-nav a:hover, .page-nav a.active { color: #fff; }
+    .page-nav a.active { border-bottom: 2px solid #dc0000; padding-bottom: 4px; }
+    
+    .page-auth {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .page-auth:hover { background: #fff; color: #111; border-color: #fff; }
+    
+    .contact-hero {
+      padding: 140px 40px 60px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      text-align: center;
+    }
+    
+    .contact-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    
+    .contact-subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      margin: 0;
+    }
+    
+    .contact-content {
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    
+    @media (max-width: 900px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+    
+    .contact-form-card {
+      background: #f8f8f8;
+      border-radius: 24px;
+      padding: 48px;
+    }
+    
+    .form-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #111;
+      margin: 0 0 32px;
+    }
+    
+    .form-group { margin-bottom: 24px; }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    @media (max-width: 500px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 18px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      font-size: 15px;
+      font-family: 'Open Sans', sans-serif;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+    
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: #111;
+    }
+    
+    .form-input::placeholder, .form-textarea::placeholder { color: #999; }
+    
+    .form-textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+    
+    .btn {
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #dc0000 0%, #ff4444 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(220, 0, 0, 0.4);
+      width: 100%;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(220, 0, 0, 0.6);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .contact-info-card {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    
+    .info-card {
+      background: linear-gradient(135deg, #111 0%, #1a1a2e 100%);
+      border-radius: 20px;
+      padding: 32px;
+      color: #fff;
+    }
+    
+    .info-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(220, 0, 0, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .info-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+    
+    .info-value {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    .info-value a {
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    .info-value a:hover {
+      text-decoration: underline;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    
+    .social-link {
+      width: 48px;
+      height: 48px;
+      background: #f8f8f8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      transform: translateY(-4px);
+      background: #111;
+    }
+    
+    .whatsapp-card {
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      border-radius: 20px;
+      padding: 32px;
+      color: #fff;
+      text-align: center;
+    }
+    
+    .whatsapp-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .whatsapp-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    
+    .whatsapp-text {
+      font-size: 14px;
+      opacity: 0.9;
+      margin: 0 0 20px;
+    }
+    
+    .btn-whatsapp {
+      background: #fff;
+      color: #25d366;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-whatsapp:hover {
+      transform: scale(1.05);
+    }
+    
+    .alert {
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .site-footer {
+      padding: 40px;
+      background: #0a0a0f;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+    
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+    
+    @media (max-width: 768px) {
+      .page-header { padding: 16px 20px; }
+      .page-nav { display: none; }
+      .contact-hero { padding: 120px 20px 40px; }
+      .contact-content { padding: 40px 20px; }
+      .contact-form-card { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    function App() {
+      const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart') || '[]'));
+      const [user, setUser] = useState(null);
+      const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+      const [submitting, setSubmitting] = useState(false);
+      const [alert, setAlert] = useState({ show: false, type: '', message: '' });
+      
+      useEffect(() => {
+        checkAuth();
+      }, []);
+      
+      useEffect(() => {
+        if (alert.show) {
+          const timer = setTimeout(() => setAlert({ ...alert, show: false }), 5000);
+          return () => clearTimeout(timer);
+        }
+      }, [alert.show]);
+      
+      const checkAuth = () => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+      };
+      
+      const showAlert = (type, message) => {
+        setAlert({ show: true, type, message });
+      };
+      
+      const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      };
+      
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        
+        try {
+          const res = await fetch('api.php?action=contact', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            showAlert('success', 'Message sent successfully! We will contact you soon.');
+            setFormData({ name: '', email: '', phone: '', message: '' });
+          } else {
+            showAlert('error', data.error || 'Failed to send message');
+          }
+        } catch (err) {
+          showAlert('error', 'Connection error. Please try again.');
+        } finally {
+          setSubmitting(false);
+        }
+      };
+      
+      const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.href = 'index.html';
+      };
+      
+      return (
+        <>
+          <header className="page-header">
+            <a href="index.html" className="page-brand">IBF Motors</a>
+            <nav>
+              <ul className="page-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="contact.html" className="active">Contact</a></li>
+                <li><a href="checkout.html">Cart <span id="cartCount">{cart.length}</span></a></li>
+              </ul>
+            </nav>
+            {user ? (
+              <button className="page-auth" onClick={handleLogout}>Logout</button>
+            ) : (
+              <a href="login.html" className="page-auth">Login</a>
+            )}
+          </header>
+          
+          <section className="contact-hero">
+            <h1 className="contact-title">Contact Us</h1>
+            <p className="contact-subtitle">Get in touch for availability, financing, and delivery</p>
+          </section>
+          
+          <main className="contact-content">
+            <div className="contact-grid">
+              <div className="contact-form-card">
+                <h2 className="form-title">Send us a Message</h2>
+                
+                {alert.show && (
+                  <div className={`alert alert-${alert.type}`}>
+                    {alert.message}
+                  </div>
+                )}
+                
+                <form onSubmit={handleSubmit}>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        name="name"
+                        className="form-input"
+                        placeholder="Full Name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="email"
+                        name="email"
+                        className="form-input"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <input
+                      type="tel"
+                      name="phone"
+                      className="form-input"
+                      placeholder="Phone (optional)"
+                      value={formData.phone}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <textarea
+                      name="message"
+                      className="form-textarea"
+                      placeholder="Your message..."
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    {submitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              </div>
+              
+              <div className="contact-info-card">
+                <div className="info-card">
+                  <div className="info-icon">📧</div>
+                  <div className="info-label">Email</div>
+                  <div className="info-value">
+                    <a href="mailto:ahmed.ghezal@gmail.com">ahmed.ghezal@gmail.com</a>
+                  </div>
+                </div>
+                
+                <div className="info-card">
+                  <div className="info-icon">📞</div>
+                  <div className="info-label">Phone</div>
+                  <div className="info-value">
+                    <a href="tel:+21693754078">+216 93754078</a>
+                  </div>
+                </div>
+                
+                <div className="info-card">
+                  <div className="info-icon">🌍</div>
+                  <div className="info-label">Location</div>
+                  <div className="info-value">Tunisia</div>
+                </div>
+                
+                <div className="whatsapp-card">
+                  <div className="whatsapp-icon">💬</div>
+                  <h3 className="whatsapp-title">Quick Response</h3>
+                  <p className="whatsapp-text">Message us on WhatsApp for instant assistance</p>
+                  <a href="https://wa.me/21693754078?text=Hello%20I%20want%20to%20contact%20IBF%20Motors" target="_blank" className="btn-whatsapp">
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </main>
+          
+          <footer className="site-footer">
+            <div>© 2025 IBF Motors. All rights reserved.</div>
+          </footer>
+          
+          <a href="https://wa.me/21693754078" target="_blank" className="whatsapp-float">💬</a>
+        </>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

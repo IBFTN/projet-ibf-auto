@@ -1,0 +1,9 @@
+
+#cartCount {
+    background: var(--red);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}

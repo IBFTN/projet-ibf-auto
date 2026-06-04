@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBF Motors — Catalog</title>
+  <link rel="icon" href="logo1.png" type="image/png">
+  <link rel="shortcut icon" href="logo1.png" type="image/png">
+  <link href="styles.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', system-ui, sans-serif; background: #f8f8f8; color: #111; }
+    
+    .page-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+    }
+    
+    .page-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    
+    .page-nav {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .page-nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    
+    .page-nav a:hover, .page-nav a.active { color: #fff; }
+    .page-nav a.active { border-bottom: 2px solid #dc0000; padding-bottom: 4px; }
+    
+    .page-auth {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .page-auth:hover { background: #fff; color: #111; border-color: #fff; }
+    
+    .catalog-hero {
+      padding: 140px 40px 60px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      text-align: center;
+    }
+    
+    .catalog-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    
+    .catalog-subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      margin: 0;
+    }
+    
+    .catalog-content {
+      padding: 60px 40px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .catalog-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .filter-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-pill {
+      padding: 10px 20px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .filter-pill:hover { border-color: #111; }
+    .filter-pill.active { background: #111; color: #fff; border-color: #111; }
+    
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 50px;
+      padding: 8px 20px;
+      gap: 12px;
+    }
+    
+    .search-box:focus-within { border-color: #111; }
+    
+    .search-input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-family: 'Open Sans', sans-serif;
+      width: 200px;
+    }
+    
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 32px;
+    }
+    
+    .car-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: all 0.4s ease;
+      animation: scaleIn 0.5s ease-out both;
+    }
+    
+    .car-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .car-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+    
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .car-card:hover .car-image { transform: scale(1.08); }
+    
+    .car-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 6px 12px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .car-content { padding: 24px; }
+    
+    .car-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+      margin: 0 0 8px;
+    }
+    
+    .car-meta {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+    
+    .car-specs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .car-spec {
+      font-size: 12px;
+      color: #666;
+      background: #f5f5f5;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    
+    .car-price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #dc0000;
+      margin-bottom: 20px;
+    }
+    
+    .car-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #dc0000 0%, #ff4444 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(220, 0, 0, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(220, 0, 0, 0.6);
+    }
+    
+    .btn-secondary {
+      background: #fff;
+      color: #111;
+      border: 2px solid #e5e7eb;
+    }
+    
+    .btn-secondary:hover { border-color: #111; }
+    
+    .car-actions .btn { flex: 1; padding: 12px 16px; font-size: 12px; text-align: center; }
+    
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      grid-column: 1 / -1;
+    }
+
+    .sold-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      transform: rotate(-15deg);
+      border: 4px solid #fff;
+      margin: auto;
+      width: fit-content;
+      height: fit-content;
+      padding: 10px 30px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .car-card.sold {
+      opacity: 0.8;
+      filter: grayscale(0.5);
+    }
+
+    .btn-disabled {
+      background: #ccc !important;
+      color: #666 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #dc0000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+    
+    .no-results h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    
+    .results-count {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 24px;
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      background: #fff;
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 480px;
+      width: 90%;
+      position: relative;
+      animation: scaleIn 0.3s ease;
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f5f5f5;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+    
+    .modal-close:hover { background: #e5e5e5; }
+    
+    .modal-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 4px;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-tab.active {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .form-group { margin-bottom: 20px; }
+    
+    .form-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Open Sans', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #111;
+    }
+    
+    .form-input::placeholder { color: #999; }
+    
+    .alert {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    
+    .alert-error {
+      background: #fee;
+      color: #c00;
+      border: 1px solid #fcc;
+    }
+    
+    .alert-success {
+      background: #efe;
+      color: #060;
+      border: 1px solid #cfc;
+    }
+    
+    .google-btn {
+      width: 100%;
+      padding: 14px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+    }
+    
+    .google-btn:hover { border-color: #111; background: #fafafa; }
+    
+    .site-footer {
+      padding: 40px;
+      background: #0a0a0f;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      margin-top: 60px;
+    }
+    
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+    
+    @media (max-width: 768px) {
+      .page-header { padding: 16px 20px; }
+      .page-nav { display: none; }
+      .catalog-hero { padding: 120px 20px 40px; }
+      .catalog-content { padding: 40px 20px; }
+      .catalog-toolbar { flex-direction: column; align-items: stretch; }
+      .filter-pills { justify-content: center; }
+      .search-box { width: 100%; }
+      .search-input { width: 100%; }
+      .cars-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    function App() {
+      const [cars, setCars] = useState([]);
+      const [brands, setBrands] = useState(['All', 'Ferrari', 'Lamborghini', 'Porsche', 'McLaren', 'Bugatti', 'Aston Martin', 'Mercedes', 'BMW', 'Bentley', 'Rolls-Royce']);
+      const [filteredCars, setFilteredCars] = useState([]);
+      const [filter, setFilter] = useState('All');
+      const [search, setSearch] = useState('');
+      const [loading, setLoading] = useState(true);
+      const [user, setUser] = useState(null);
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [authMode, setAuthMode] = useState('signin');
+      const [alert, setAlert] = useState({ show: false, type: '', message: '' });
+      
+      useEffect(() => {
+        fetchCars();
+        fetchBrands();
+        checkAuth();
+      }, []);
+
+      const fetchBrands = async () => {
+        try {
+          const res = await fetch('api.php?action=brands');
+          const data = await res.json();
+          // Extract names from brand objects
+          const brandNames = data.map(b => b.name);
+          setBrands(['All', ...brandNames]);
+        } catch (err) {
+          console.error('Error fetching brands:', err);
+        }
+      };
+      
+      useEffect(() => {
+        let result = cars;
+        
+        if (filter !== 'All') {
+          result = result.filter(car => car.brand_name === filter);
+        }
+        
+        if (search.trim()) {
+          const searchLower = search.toLowerCase();
+          result = result.filter(car =>
+            car.brand_name.toLowerCase().includes(searchLower) ||
+            car.model.toLowerCase().includes(searchLower) ||
+            String(car.year).includes(search)
+          );
+        }
+        
+        setFilteredCars(result);
+      }, [cars, filter, search]);
+      
+      useEffect(() => {
+        if (alert.show) {
+          const timer = setTimeout(() => setAlert({ ...alert, show: false }), 5000);
+          return () => clearTimeout(timer);
+        }
+      }, [alert.show]);
+      
+      const fetchCars = async () => {
+        try {
+          const res = await fetch('api.php?action=cars');
+          const data = await res.json();
+          setCars(data);
+        } catch (err) {
+          console.error('Error:', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      const checkAuth = () => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+      };
+      
+      const showAlert = (type, message) => {
+        setAlert({ show: true, type, message });
+      };
+      
+      const handleLogin = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        try {
+          const res = await fetch('auth.php?action=login', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+            setUser(data.user);
+            setShowAuthModal(false);
+            showAlert('success', 'Welcome back!');
+          } else {
+            showAlert('error', data.error || 'Login failed');
+          }
+        } catch (err) {
+          showAlert('error', 'Connection error');
+        }
+      };
+      
+      const handleRegister = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirm_password');
+        
+        if (password !== confirmPassword) {
+          showAlert('error', 'Passwords do not match');
+          return;
+        }
+        
+        try {
+          const res = await fetch('auth.php?action=register', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            showAlert('success', 'Account created! Please sign in.');
+            setAuthMode('signin');
+          } else {
+            showAlert('error', data.error || 'Registration failed');
+          }
+        } catch (err) {
+          showAlert('error', 'Connection error');
+        }
+      };
+      
+      const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.href = 'index.html';
+      };
+      
+      const handleBuy = async (carId) => {
+        if (!user) {
+          setShowAuthModal(true);
+          return;
+        }
+
+        try {
+          const res = await fetch(`api.php?action=car&id=${carId}`);
+          const car = await res.json();
+
+          if (car.error) {
+            showAlert('error', 'Car not found');
+            return;
+          }
+
+          if (car.sold === 1 || car.sold === true) {
+            showAlert('error', 'This car is already sold!');
+            return;
+          }
+
+          const cartItem = {
+            id: car.id,
+            model: (car.brand_name || '') + ' ' + car.model,
+            year: car.year,
+            price: parseFloat(car.price),
+            engine: car.engine,
+            image_blob: car.image_blob || car.image_url,
+            image_url: car.image_url
+          };
+
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const exists = cart.some(item => item.id === car.id);
+
+          if (exists) {
+            showAlert('error', 'This car is already in your cart!');
+          } else {
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            const countEl = document.getElementById('cartCount');
+            if (countEl) countEl.textContent = cart.length;
+            showAlert('success', 'Car added to cart! View cart to checkout.');
+          }
+        } catch (err) {
+          console.error('Error adding to cart:', err);
+          showAlert('error', 'Failed to add to cart');
+        }
+      };
+      
+      return (
+        <>
+          <header className="page-header">
+            <a href="index.html" className="page-brand">IBF Motors</a>
+            <nav>
+              <ul className="page-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html" className="active">Catalog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="checkout.html">Cart <span id="cartCount">{JSON.parse(localStorage.getItem('cart') || '[]').length}</span></a></li>
+              </ul>
+            </nav>
+            {user ? (
+              <button className="page-auth" onClick={handleLogout}>Logout</button>
+            ) : (
+              <button className="page-auth" onClick={() => setShowAuthModal(true)}>Login</button>
+            )}
+          </header>
+          
+          <section className="catalog-hero">
+            <h1 className="catalog-title">Our Collection</h1>
+            <p className="catalog-subtitle">Explore our curated selection of premium vehicles</p>
+          </section>
+          
+          <main className="catalog-content">
+            <div className="catalog-toolbar">
+              <div className="filter-pills">
+                {brands.map(brand => (
+                  <button
+                    key={brand}
+                    className={`filter-pill ${filter === brand ? 'active' : ''}`}
+                    onClick={() => setFilter(brand)}
+                  >
+                    {brand}
+                  </button>
+                ))}
+              </div>
+              <div className="search-box">
+                <span>🔍</span>
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search cars..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            {loading ? (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+              </div>
+            ) : (
+              <div className="cars-grid">
+                {filteredCars.length > 0 ? (
+                  filteredCars.map((car, index) => (
+                    <CarCard
+                      key={car.id}
+                      car={car}
+                      onBuy={() => handleBuy(car.id)}
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    />
+                  ))
+                ) : (
+                  <div className="no-results">
+                    <h3>No cars found</h3>
+                    <p>Try adjusting your filters or search terms</p>
+                    <button className="btn btn-secondary" onClick={() => { setFilter('All'); setSearch(''); }}>
+                      Clear Filters
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </main>
+          
+          <footer className="site-footer">
+            <div>© 2025 IBF Motors. All rights reserved.</div>
+          </footer>
+          
+          <a href="https://wa.me/21693754078" target="_blank" className="whatsapp-float">💬</a>
+          
+          {alert.show && (
+            <div className="modal-overlay" onClick={() => setAlert({ ...alert, show: false })}>
+              <div className={`alert alert-${alert.type}`} style={{ margin: 'auto', maxWidth: 400, position: 'relative' }}>
+                {alert.message}
+              </div>
+            </div>
+          )}
+          
+          {showAuthModal && (
+            <AuthModal
+              mode={authMode}
+              onModeChange={setAuthMode}
+              onClose={() => setShowAuthModal(false)}
+              onLogin={handleLogin}
+              onRegister={handleRegister}
+              alert={alert}
+            />
+          )}
+        </>
+      );
+    }
+    
+    function CarCard({ car, onBuy, style }) {
+      const isSold = car.sold === 1 || car.sold === true;
+      
+      return (
+        <div className={`car-card ${isSold ? 'sold' : ''}`} style={style}>
+          <div className="car-image-wrapper">
+            <img className="car-image" src={car.image_blob || car.image_url} alt={car.brand_name + ' ' + car.model} />
+            <span className="car-badge">{car.brand_name}</span>
+            {isSold && <div className="sold-overlay">SOLD</div>}
+          </div>
+          <div className="car-content">
+            <h3 className="car-title">{car.brand_name} {car.model}</h3>
+            <p className="car-meta">{car.year}</p>
+            <div className="car-specs">
+              {car.engine && <span className="car-spec">{car.engine}</span>}
+              {car.power && <span className="car-spec">{car.power}</span>}
+            </div>
+            <div className="car-price">${Number(car.price).toLocaleString()}</div>
+            <div className="car-actions">
+              <button 
+                className={`btn ${isSold ? 'btn-disabled' : 'btn-primary'}`} 
+                onClick={isSold ? null : onBuy}
+                disabled={isSold}
+              >
+                {isSold ? 'Already Sold' : 'Order Now'}
+              </button>
+              <a href={`car.html?id=${car.id}`} className="btn btn-secondary">Details</a>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    function AuthModal({ mode, onModeChange, onClose, onLogin, onRegister, alert }) {
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={onClose}>×</button>
+            <h2 className="modal-title">{mode === 'signin' ? 'Welcome Back' : 'Create Account'}</h2>
+            
+            {alert.show && (
+              <div className={`alert alert-${alert.type}`}>{alert.message}</div>
+            )}
+            
+            <div className="auth-tabs">
+              <button
+                className={`auth-tab ${mode === 'signin' ? 'active' : ''}`}
+                onClick={() => onModeChange('signin')}
+              >
+                Sign In
+              </button>
+              <button
+                className={`auth-tab ${mode === 'signup' ? 'active' : ''}`}
+                onClick={() => onModeChange('signup')}
+              >
+                Sign Up
+              </button>
+            </div>
+            
+            {mode === 'signin' ? (
+              <form onSubmit={onLogin}>
+                <div className="form-group">
+                  <input type="email" name="email" className="form-input" placeholder="Email" required />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="password" className="form-input" placeholder="Password" required />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Sign In</button>
+              </form>
+            ) : (
+              <form onSubmit={onRegister}>
+                <div className="form-group">
+                  <input type="text" name="name" className="form-input" placeholder="Full Name" required />
+                </div>
+                <div className="form-group">
+                  <input type="email" name="email" className="form-input" placeholder="Email" required />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="password" className="form-input" placeholder="Password" required minLength={6} />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="confirm_password" className="form-input" placeholder="Confirm Password" required />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Create Account</button>
+              </form>
+            )}
+            
+            <button className="google-btn" onClick={() => window.location.href = 'auth.php?action=google'}>
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

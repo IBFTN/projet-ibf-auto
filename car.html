@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBF Motors — Car Details</title>
+  <link rel="icon" href="logo1.png" type="image/png">
+  <link rel="shortcut icon" href="logo1.png" type="image/png">
+  <link href="styles.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', system-ui, sans-serif; background: #fff; color: #111; }
+    
+    .page-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+    }
+    
+    .page-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    
+    .page-nav {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .page-nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+    
+    .page-nav a:hover, .page-nav a.active { color: #fff; }
+    .page-nav a.active { border-bottom: 2px solid #dc0000; padding-bottom: 4px; }
+    
+    .page-auth {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .page-auth:hover { background: #fff; color: #111; border-color: #fff; }
+    
+    .hero-section {
+      position: relative;
+      height: 70vh;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.5s ease;
+    }
+    
+    .hero-section:hover .hero-bg {
+      transform: scale(1.05);
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(220, 0, 0, 0.9);
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    
+    .hero-subtitle {
+      font-size: 20px;
+      color: rgba(255,255,255,0.9);
+      margin: 0;
+      font-weight: 500;
+    }
+    
+    .details-section {
+      padding: 80px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: start;
+    }
+    
+    @media (max-width: 900px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+    
+    .car-image-gallery {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    .main-image {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+    }
+    
+    .car-info-card {
+      background: #f8f8f8;
+      border-radius: 24px;
+      padding: 40px;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .car-brand {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #dc0000;
+      margin-bottom: 8px;
+    }
+    
+    .car-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: #111;
+      margin: 0 0 24px;
+    }
+    
+    .car-price-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: #dc0000;
+      margin-bottom: 32px;
+    }
+    
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    
+    .spec-item {
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+    }
+    
+    .spec-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    
+    .spec-value {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+    
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 18px 32px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #dc0000 0%, #ff4444 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(220, 0, 0, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(220, 0, 0, 0.6);
+    }
+    
+    .btn-whatsapp {
+      background: #25d366;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    }
+    
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+
+    .btn-disabled {
+      background: #ccc !important;
+      color: #666 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .sold-badge-large {
+      display: inline-block;
+      padding: 10px 30px;
+      background: #dc0000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+      transform: rotate(-2deg);
+    }
+    
+    .btn-secondary {
+      background: #fff;
+      color: #111;
+      border: 2px solid #e5e7eb;
+    }
+    
+    .btn-secondary:hover { border-color: #111; }
+    
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #dc0000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .site-footer {
+      padding: 40px;
+      background: #0a0a0f;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      margin-top: 60px;
+    }
+    
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+    
+    @media (max-width: 768px) {
+      .page-header { padding: 16px 20px; }
+      .page-nav { display: none; }
+      .hero-section { height: 50vh; min-height: 400px; }
+      .details-section { padding: 40px 20px; }
+      .car-info-card { padding: 24px; position: static; }
+      .car-name { font-size: 24px; }
+      .car-price-tag { font-size: 28px; }
+      .specs-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    function App() {
+      const [car, setCar] = useState(null);
+      const [user, setUser] = useState(null);
+      const [loading, setLoading] = useState(true);
+      
+      useEffect(() => {
+        fetchCarDetails();
+        checkAuth();
+      }, []);
+      
+      const fetchCarDetails = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const carId = urlParams.get('id');
+        
+        if (!carId) {
+          window.location.href = 'catalog.html';
+          return;
+        }
+        
+        try {
+          const res = await fetch(`api.php?action=car&id=${carId}`);
+          const data = await res.json();
+          
+          if (data.error) {
+            window.location.href = 'catalog.html';
+            return;
+          }
+          
+          setCar(data);
+          document.title = `${data.brand_name} ${data.model} — IBF Motors`;
+        } catch (err) {
+          console.error('Error:', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      const checkAuth = () => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+      };
+      
+      const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.href = 'index.html';
+      };
+      
+      const handleBuy = async () => {
+        if (!user) {
+          window.location.href = 'login.html';
+          return;
+        }
+
+        if (isSold) {
+          setError('This car is already sold!');
+          return;
+        }
+
+        try {
+          const res = await fetch(`api.php?action=car&id=${car.id}`);
+          const carData = await res.json();
+
+          if (carData.error) {
+            setError('Car not found');
+            return;
+          }
+
+          const cartItem = {
+            id: carData.id,
+            model: (carData.brand_name || '') + ' ' + carData.model,
+            year: carData.year,
+            price: parseFloat(carData.price),
+            engine: carData.engine,
+            image_blob: carData.image_blob || carData.image_url,
+            image_url: carData.image_url
+          };
+
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const exists = cart.some(item => item.id === carData.id);
+
+          if (exists) {
+            setError('This car is already in your cart!');
+          } else {
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            const countEl = document.getElementById('cartCount');
+            if (countEl) countEl.textContent = cart.length;
+            setSuccess('Car added to cart! View cart to checkout.');
+          }
+        } catch (err) {
+          console.error('Error adding to cart:', err);
+          setError('Failed to add to cart');
+        }
+      };
+      
+      if (loading) {
+        return (
+          <div className="loading-container">
+            <div className="spinner"></div>
+          </div>
+        );
+      }
+
+      const isSold = car.sold === 1 || car.sold === true;
+      const whatsappMsg = encodeURIComponent(`Hello, I'm interested in the ${car.brand_name} ${car.model} (${car.year}) priced at $${Number(car.price).toLocaleString()}.`);
+      
+      return (
+        <>
+          <header className="page-header">
+            <a href="index.html" className="page-brand">IBF Motors</a>
+            <nav>
+              <ul className="page-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html" className="active">Catalog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+              </ul>
+            </nav>
+            {user ? (
+              <button className="page-auth" onClick={handleLogout}>Logout</button>
+            ) : (
+              <a href="login.html" className="page-auth">Login</a>
+            )}
+          </header>
+          
+          <section className="hero-section">
+            <div 
+              className="hero-bg" 
+              style={{ backgroundImage: `url(${car.image_blob || car.image_url})` }}
+            />
+            <div className="hero-overlay" />
+            <div className="hero-content">
+              <span className="hero-badge">{car.brand_name}</span>
+              <h1 className="hero-title">{car.model}</h1>
+              <p className="hero-subtitle">Year {car.year} • Price ${Number(car.price).toLocaleString()}</p>
+            </div>
+          </section>
+          
+          <main className="details-section">
+            <div className="details-grid">
+              <div className="car-image-gallery" style={{ animation: 'scaleIn 0.5s ease-out' }}>
+                <img 
+                  className="main-image" 
+                  src={car.image_blob || car.image_url} 
+                  alt={car.brand_name + ' ' + car.model}
+                />
+              </div>
+              
+              <div className="car-info-card" style={{ animation: 'fadeInUp 0.5s ease-out 0.2s both' }}>
+                <div className="car-brand">{car.brand_name}</div>
+                <h2 className="car-name">{car.model}</h2>
+                {isSold && <div className="sold-badge-large">SOLD</div>}
+                <div className="car-price-tag">${Number(car.price).toLocaleString()}</div>
+                
+                <div className="specs-grid">
+                  {car.engine && (
+                    <div className="spec-item">
+                      <div className="spec-label">Engine</div>
+                      <div className="spec-value">{car.engine}</div>
+                    </div>
+                  )}
+                  {car.power && (
+                    <div className="spec-item">
+                      <div className="spec-label">Power</div>
+                      <div className="spec-value">{car.power}</div>
+                    </div>
+                  )}
+                  {car.drive && (
+                    <div className="spec-item">
+                      <div className="spec-label">Drive</div>
+                      <div className="spec-value">{car.drive}</div>
+                    </div>
+                  )}
+                  <div className="spec-item">
+                    <div className="spec-label">Year</div>
+                    <div className="spec-value">{car.year}</div>
+                  </div>
+                </div>
+                
+                <div className="action-buttons">
+                  <button 
+                    className={`btn ${isSold ? 'btn-disabled' : 'btn-primary'}`} 
+                    onClick={isSold ? null : handleBuy}
+                    disabled={isSold}
+                  >
+                    {isSold ? 'Already Sold' : 'Order Now'}
+                  </button>
+                  <a 
+                    href={`https://wa.me/21693754078?text=${whatsappMsg}`}
+                    target="_blank"
+                    className="btn btn-whatsapp"
+                  >
+                    💬 WhatsApp
+                  </a>
+                  <a href="catalog.html" className="btn btn-secondary">
+                    ← Back to Catalog
+                  </a>
+                </div>
+              </div>
+            </div>
+          </main>
+          
+          <footer className="site-footer">
+            <div>© 2025 IBF Motors. All rights reserved.</div>
+          </footer>
+          
+          <a href="https://wa.me/21693754078" target="_blank" className="whatsapp-float">💬</a>
+        </>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

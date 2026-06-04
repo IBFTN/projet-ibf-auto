@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBF Motors — Home</title>
+  <link rel="icon" href="logo1.png" type="image/png">
+  <link rel="shortcut icon" href="logo1.png" type="image/png">
+  <link href="styles.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Open Sans', system-ui, sans-serif; background: #fff; color: #111; }
+    
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f23 100%);
+    }
+    
+    .hero-video-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 900px;
+      animation: fadeInUp 1s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .brand-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #fff;
+      margin-bottom: 60px;
+      text-transform: uppercase;
+    }
+    
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 24px;
+      line-height: 1.1;
+      letter-spacing: -2px;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: rgba(255,255,255,0.8);
+      margin: 0 0 48px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    
+    .btn {
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #dc0000 0%, #ff4444 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(220, 0, 0, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(220, 0, 0, 0.6);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.6);
+    }
+    
+    .nav-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .nav-header.scrolled {
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 16px 40px;
+    }
+    
+    .nav-brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover, .nav-links a.active {
+      color: #fff;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #dc0000;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after, .nav-links a.active::after {
+      width: 100%;
+    }
+    
+    .nav-auth {
+      padding: 10px 24px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .nav-auth:hover {
+      background: #fff;
+      color: #111;
+      border-color: #fff;
+    }
+    
+    .about-section {
+      padding: 120px 40px;
+      background: #fff;
+      text-align: center;
+    }
+    
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #dc0000;
+      margin-bottom: 16px;
+    }
+    
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      color: #111;
+      margin: 0 0 24px;
+      letter-spacing: -1px;
+    }
+    
+    .section-desc {
+      font-size: 18px;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 60px auto 0;
+      padding: 0 20px;
+    }
+    
+    .brand-item {
+      padding: 30px 20px;
+      background: #f8f8f8;
+      border-radius: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+    
+    .brand-item:hover {
+      background: #111;
+      color: #fff;
+      transform: translateY(-4px);
+    }
+    
+    .catalog-section {
+      padding: 120px 40px;
+      background: #f8f8f8;
+    }
+    
+    .catalog-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .filter-pills {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    
+    .filter-pill {
+      padding: 10px 20px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .filter-pill:hover {
+      border-color: #111;
+    }
+    
+    .filter-pill.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+    
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .car-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: all 0.4s ease;
+      animation: scaleIn 0.5s ease-out both;
+    }
+    
+    .car-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .car-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+    
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .car-card:hover .car-image {
+      transform: scale(1.08);
+    }
+    
+    .car-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 6px 12px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .car-content {
+      padding: 24px;
+    }
+    
+    .car-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111;
+      margin: 0 0 8px;
+    }
+    
+    .car-meta {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+    
+    .car-price {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: #dc0000;
+      margin-bottom: 20px;
+    }
+    
+    .car-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .car-actions .btn {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .sold-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      transform: rotate(-15deg);
+      border: 4px solid #fff;
+      margin: auto;
+      width: fit-content;
+      height: fit-content;
+      padding: 10px 30px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .car-card.sold {
+      opacity: 0.8;
+      filter: grayscale(0.5);
+    }
+
+    .btn-disabled {
+      background: #ccc !important;
+      color: #666 !important;
+      cursor: not-allowed !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+    
+    .gallery-section {
+      padding: 120px 40px;
+      background: #111;
+    }
+    
+    .gallery-section .section-title {
+      color: #fff;
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1400px;
+      margin: 60px auto 0;
+    }
+    
+    .gallery-item {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      animation: scaleIn 0.5s ease-out both;
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    
+    .contact-section {
+      padding: 120px 40px;
+      background: #fff;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Open Sans', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #111;
+    }
+    
+    .form-input::placeholder {
+      color: #999;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    @media (max-width: 480px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .contact-info-card {
+      background: #f8f8f8;
+      border-radius: 20px;
+      padding: 40px;
+    }
+    
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .contact-info-icon {
+      width: 48px;
+      height: 48px;
+      background: #111;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+    }
+    
+    .contact-info-text {
+      font-size: 15px;
+      color: #333;
+    }
+    
+    .contact-info-label {
+      font-size: 12px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    
+    .site-footer {
+      padding: 40px;
+      background: #0a0a0f;
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+    
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #dc0000;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+      background: #fff;
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 480px;
+      width: 90%;
+      position: relative;
+      animation: scaleIn 0.3s ease;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #f5f5f5;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+    
+    .modal-close:hover {
+      background: #e5e5e5;
+    }
+    
+    .modal-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 32px;
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 4px;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-tab.active {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .alert {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    
+    .alert-error {
+      background: #fee;
+      color: #c00;
+      border: 1px solid #fcc;
+    }
+    
+    .alert-success {
+      background: #efe;
+      color: #060;
+      border: 1px solid #cfc;
+    }
+    
+    .google-btn {
+      width: 100%;
+      padding: 14px;
+      background: #fff;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+    }
+    
+    .google-btn:hover {
+      border-color: #111;
+      background: #fafafa;
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+    }
+    
+    .scroll-indicator span {
+      display: block;
+      width: 24px;
+      height: 40px;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 12px;
+      position: relative;
+    }
+    
+    .scroll-indicator span::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: #fff;
+      border-radius: 2px;
+      animation: scrollWheel 1.5s infinite;
+    }
+    
+    @keyframes scrollWheel {
+      0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    }
+    
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 28px;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    
+    function App() {
+      const [cars, setCars] = useState([]);
+      const [brands, setBrands] = useState([]);
+      const [brandNames, setBrandNames] = useState(['All', 'Ferrari', 'Lamborghini', 'Porsche', 'McLaren', 'Bugatti', 'Aston Martin', 'Mercedes', 'BMW', 'Bentley', 'Rolls-Royce']);
+      const [featuredCars, setFeaturedCars] = useState([]);
+      const [filter, setFilter] = useState('All');
+      const [loading, setLoading] = useState(true);
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [authMode, setAuthMode] = useState('signin');
+      const [user, setUser] = useState(null);
+      const [alert, setAlert] = useState({ show: false, type: '', message: '' });
+      const [scrolled, setScrolled] = useState(false);
+      
+      useEffect(() => {
+        fetchCars();
+        fetchBrands();
+        fetchFeaturedCars();
+        checkAuth();
+        
+        window.addEventListener('scroll', () => {
+          setScrolled(window.scrollY > 50);
+        });
+      }, []);
+
+      const fetchBrands = async () => {
+        try {
+          const res = await fetch('api.php?action=brands');
+          const data = await res.json();
+          setBrands(data);
+          const names = data.map(b => b.name);
+          setBrandNames(['All', ...names]);
+        } catch (err) {
+          console.error('Error fetching brands:', err);
+        }
+      };
+      
+      useEffect(() => {
+        if (alert.show) {
+          const timer = setTimeout(() => setAlert({ ...alert, show: false }), 5000);
+          return () => clearTimeout(timer);
+        }
+      }, [alert.show]);
+      
+      const fetchCars = async () => {
+        try {
+          const res = await fetch('api.php?action=cars');
+          const data = await res.json();
+          setCars(data);
+        } catch (err) {
+          console.error('Error fetching cars:', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      const fetchFeaturedCars = async () => {
+        try {
+          const res = await fetch('api.php?action=featured');
+          const data = await res.json();
+          setFeaturedCars(data);
+        } catch (err) {
+          console.error('Error fetching featured:', err);
+        }
+      };
+      
+      const checkAuth = () => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+      };
+      
+      const showAlert = (type, message) => {
+        setAlert({ show: true, type, message });
+      };
+      
+      const handleLogin = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        try {
+          const res = await fetch('auth.php?action=login', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+            setUser(data.user);
+            setShowAuthModal(false);
+            showAlert('success', 'Welcome back!');
+          } else {
+            showAlert('error', data.error || 'Login failed');
+          }
+        } catch (err) {
+          showAlert('error', 'Connection error');
+        }
+      };
+      
+      const handleRegister = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirm_password');
+        
+        if (password !== confirmPassword) {
+          showAlert('error', 'Passwords do not match');
+          return;
+        }
+        
+        try {
+          const res = await fetch('auth.php?action=register', {
+            method: 'POST',
+            body: formData
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            showAlert('success', 'Account created! Please sign in.');
+            setAuthMode('signin');
+          } else {
+            showAlert('error', data.error || 'Registration failed');
+          }
+        } catch (err) {
+          showAlert('error', 'Connection error');
+        }
+      };
+      
+      const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+        window.location.href = 'index.html';
+      };
+      
+      const handleBuy = async (carId) => {
+        if (!user) {
+          setShowAuthModal(true);
+          return;
+        }
+
+        try {
+          const res = await fetch(`api.php?action=car&id=${carId}`);
+          const car = await res.json();
+
+          if (car.error) {
+            setAlert({ show: true, type: 'error', message: 'Car not found' });
+            return;
+          }
+
+          if (car.sold === 1 || car.sold === true) {
+            setAlert({ show: true, type: 'error', message: 'This car is already sold!' });
+            return;
+          }
+
+          const cartItem = {
+            id: car.id,
+            model: (car.brand_name || '') + ' ' + car.model,
+            year: car.year,
+            price: parseFloat(car.price),
+            engine: car.engine,
+            image_blob: car.image_blob || car.image_url,
+            image_url: car.image_url
+          };
+
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const exists = cart.some(item => item.id === car.id);
+
+          if (exists) {
+            setAlert({ show: true, type: 'error', message: 'This car is already in your cart!' });
+          } else {
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            const countEl = document.getElementById('cartCount');
+            if (countEl) countEl.textContent = cart.length;
+            setAlert({ show: true, type: 'success', message: 'Car added to cart! View cart to checkout.' });
+          }
+        } catch (err) {
+          console.error('Error adding to cart:', err);
+          setAlert({ show: true, type: 'error', message: 'Failed to add to cart' });
+        }
+      };
+      
+      const filteredCars = filter === 'All' ? cars : cars.filter(car => car.brand_name === filter);
+      
+      return (
+        <>
+          <nav className={`nav-header ${scrolled ? 'scrolled' : ''}`}>
+            <a href="index.html" className="nav-brand">IBF Motors</a>
+            <ul className="nav-links">
+              <li><a href="index.html" className="active">Home</a></li>
+              <li><a href="catalog.html">Catalog</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li>
+                <a href="checkout.html" className="cart-link">
+                  Cart <span className="cart-badge" id="cartCount">{JSON.parse(localStorage.getItem('cart') || '[]').length}</span>
+                </a>
+              </li>
+            </ul>
+            {user ? (
+              <button className="nav-auth" onClick={handleLogout}>Logout</button>
+            ) : (
+              <button className="nav-auth" onClick={() => setShowAuthModal(true)}>Login</button>
+            )}
+          </nav>
+          
+          <section className="hero-section">
+            <video className="hero-video-bg" autoPlay muted loop playsInline poster="Ferrari 488 Pista.jpg">
+            </video>
+            <div className="hero-overlay" />
+            <div className="hero-content">
+              <div className="brand-logo">IBF Motors</div>
+              <h1 className="hero-title">Supercars Collection</h1>
+              <p className="hero-subtitle">Precision, performance, and design. Explore our curated lineup of the world's finest automobiles.</p>
+              <div className="hero-actions">
+                <a href="#catalog" className="btn btn-primary">Browse Catalog</a>
+                <a href="#contact" className="btn btn-secondary">Contact Sales</a>
+              </div>
+            </div>
+            <div className="scroll-indicator">
+              <span></span>
+            </div>
+          </section>
+          
+          <section className="about-section" id="about">
+            <div className="section-label">About Us</div>
+            <h2 className="section-title">Premium Selection</h2>
+            <p className="section-desc">
+              IBF Motors curates a selection of high-performance supercars and luxury grand tourers.
+              We focus on authenticity, condition, and provenance across the world's most prestigious brands.
+            </p>
+            <div className="brands-grid">
+              {brands.map(brand => (
+                <div key={brand.id} className="brand-item">
+                  {brand.logo_blob || brand.logo_url ? (
+                    <img 
+                      src={brand.logo_blob || brand.logo_url} 
+                      alt={brand.name} 
+                      style={{ height: '40px', objectFit: 'contain', marginBottom: '10px' }} 
+                    />
+                  ) : null}
+                  <div>{brand.name}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+          
+          <section className="catalog-section" id="catalog">
+            <div className="catalog-header">
+              <div className="section-label">Our Collection</div>
+              <h2 className="section-title">Featured Vehicles</h2>
+              <div className="filter-pills">
+                {brandNames.map(brand => (
+                  <button
+                    key={brand}
+                    className={`filter-pill ${filter === brand ? 'active' : ''}`}
+                    onClick={() => setFilter(brand)}
+                  >
+                    {brand}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {loading ? (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+              </div>
+            ) : (
+              <div className="cars-grid">
+                {filteredCars.map((car, index) => (
+                  <CarCard 
+                    key={car.id} 
+                    car={car} 
+                    onBuy={() => handleBuy(car.id)}
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+          
+          <section className="gallery-section" id="gallery">
+            <div className="catalog-header">
+              <div className="section-label">Showroom</div>
+              <h2 className="section-title">Featured Gallery</h2>
+            </div>
+            <div className="gallery-grid">
+              {featuredCars.map((car, index) => (
+                <div key={car.id} className="gallery-item" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <img src={car.image_blob || car.image_url} alt={car.brand_name + ' ' + car.model} />
+                </div>
+              ))}
+            </div>
+          </section>
+          
+          <section className="contact-section" id="contact">
+            <div className="catalog-header">
+              <div className="section-label">Get In Touch</div>
+              <h2 className="section-title">Contact Us</h2>
+            </div>
+            <div className="contact-grid">
+              <ContactForm onSuccess={(msg) => showAlert('success', msg)} />
+              <div className="contact-info-card">
+                <div className="contact-info-item">
+                  <div className="contact-info-icon">📧</div>
+                  <div>
+                    <div className="contact-info-label">Email</div>
+                    <div className="contact-info-text">ahmed.ghezal@gmail.com</div>
+                  </div>
+                </div>
+                <div className="contact-info-item">
+                  <div className="contact-info-icon">📞</div>
+                  <div>
+                    <div className="contact-info-label">Phone</div>
+                    <div className="contact-info-text">+216 93754078</div>
+                  </div>
+                </div>
+                <div className="contact-info-item">
+                  <div className="contact-info-icon">🌍</div>
+                  <div>
+                    <div className="contact-info-label">Location</div>
+                    <div className="contact-info-text">Tunisia</div>
+                  </div>
+                </div>
+                <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
+                  <a href="mailto:ahmed.ghezal@gmail.com" className="btn btn-secondary" style={{ background: '#111', color: '#fff' }}>Email Us</a>
+                  <a href="https://wa.me/21693754078" target="_blank" className="btn btn-primary">WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          <footer className="site-footer">
+            <div>© 2025 IBF Motors. All rights reserved.</div>
+          </footer>
+          
+          <a href="https://wa.me/21693754078" target="_blank" className="whatsapp-float">💬</a>
+          
+          {alert.show && (
+            <div className="modal-overlay" onClick={() => setAlert({ ...alert, show: false })}>
+              <div className={`alert alert-${alert.type}`} style={{ margin: 'auto', maxWidth: 400, position: 'relative' }}>
+                {alert.message}
+              </div>
+            </div>
+          )}
+          
+          {showAuthModal && (
+            <AuthModal 
+              mode={authMode}
+              onModeChange={setAuthMode}
+              onClose={() => setShowAuthModal(false)}
+              onLogin={handleLogin}
+              onRegister={handleRegister}
+              alert={alert}
+            />
+          )}
+        </>
+      );
+    }
+    
+    function CarCard({ car, onBuy, style }) {
+      const isSold = car.sold === 1 || car.sold === true;
+      
+      return (
+        <div className={`car-card ${isSold ? 'sold' : ''}`} style={style}>
+          <div className="car-image-wrapper">
+            <img className="car-image" src={car.image_blob || car.image_url} alt={car.brand_name + ' ' + car.model} />
+            <span className="car-badge">{car.brand_name}</span>
+            {isSold && <div className="sold-overlay">SOLD</div>}
+          </div>
+          <div className="car-content">
+            <h3 className="car-title">{car.brand_name} {car.model}</h3>
+            <p className="car-meta">{car.year}</p>
+            <div className="car-price">${Number(car.price).toLocaleString()}</div>
+            <div className="car-actions">
+              <button 
+                className={`btn ${isSold ? 'btn-disabled' : 'btn-primary'}`} 
+                onClick={isSold ? null : onBuy}
+                disabled={isSold}
+              >
+                {isSold ? 'Already Sold' : 'Order Now'}
+              </button>
+              <a href={`car.html?id=${car.id}`} className="btn btn-secondary">Details</a>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    function ContactForm({ onSuccess }) {
+      const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+      const [submitting, setSubmitting] = useState(false);
+      
+      const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      };
+      
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        
+        try {
+          const res = await fetch('api.php?action=contact', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+          });
+          const data = await res.json();
+          
+          if (data.success) {
+            onSuccess('Message sent successfully!');
+            setFormData({ name: '', email: '', phone: '', message: '' });
+          }
+        } catch (err) {
+          console.error('Error:', err);
+        } finally {
+          setSubmitting(false);
+        }
+      };
+      
+      return (
+        <form onSubmit={handleSubmit}>
+          <div className="form-row">
+            <div className="form-group">
+              <input
+                type="text"
+                name="name"
+                className="form-input"
+                placeholder="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                name="email"
+                className="form-input"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <input
+              type="tel"
+              name="phone"
+              className="form-input"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <textarea
+              name="message"
+              className="form-input"
+              placeholder="Message"
+              rows="5"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%' }}>
+            {submitting ? 'Sending...' : 'Send Message'}
+          </button>
+        </form>
+      );
+    }
+    
+    function AuthModal({ mode, onModeChange, onClose, onLogin, onRegister, alert }) {
+      return (
+        <div className="modal-overlay" onClick={onClose}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={onClose}>×</button>
+            <h2 className="modal-title">{mode === 'signin' ? 'Welcome Back' : 'Create Account'}</h2>
+            
+            {alert.show && (
+              <div className={`alert alert-${alert.type}`}>{alert.message}</div>
+            )}
+            
+            <div className="auth-tabs">
+              <button 
+                className={`auth-tab ${mode === 'signin' ? 'active' : ''}`}
+                onClick={() => onModeChange('signin')}
+              >
+                Sign In
+              </button>
+              <button 
+                className={`auth-tab ${mode === 'signup' ? 'active' : ''}`}
+                onClick={() => onModeChange('signup')}
+              >
+                Sign Up
+              </button>
+            </div>
+            
+            {mode === 'signin' ? (
+              <form onSubmit={onLogin}>
+                <div className="form-group">
+                  <input type="email" name="email" className="form-input" placeholder="Email" required />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="password" className="form-input" placeholder="Password" required />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Sign In</button>
+              </form>
+            ) : (
+              <form onSubmit={onRegister}>
+                <div className="form-group">
+                  <input type="text" name="name" className="form-input" placeholder="Full Name" required />
+                </div>
+                <div className="form-group">
+                  <input type="email" name="email" className="form-input" placeholder="Email" required />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="password" className="form-input" placeholder="Password" required minLength={6} />
+                </div>
+                <div className="form-group">
+                  <input type="password" name="confirm_password" className="form-input" placeholder="Confirm Password" required />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Create Account</button>
+              </form>
+            )}
+            
+            <button className="google-btn" onClick={() => window.location.href = 'auth.php?action=google'}>
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      );
+    }
+    
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
